@@ -1,0 +1,29 @@
+# Ignorar archivos de registro
+**/logs/
+*.log
+
+# Ignorar el directorio de entorno virtual en cualquier subdirectorio
+**/.venv*/
+
+# Ignorar archivos de configuración específicos del usuario
+.vscode/
+.idea/
+
+# Ignorar archivos de caché y compilados
+**/__pycache__/
+**/*.pyc
+
+# Ignorar archivos de datos sensibles (por ejemplo, contraseñas)
+config.ini
+.env
+
+# Ignorar carpeta temporal
+**/temp/
+**/tmp/
+
+# Ignorar archivos temporales
+temp.*
+temp*
+
+# Ignorar archivos de salida de terminal (extension .out)
+*.out

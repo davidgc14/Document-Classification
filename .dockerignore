@@ -1,0 +1,5 @@
+./logs
+Dockerfile
+./.venv
+**/__pycache__
+temp.ipynb
