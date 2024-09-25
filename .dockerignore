@@ -3,3 +3,4 @@ Dockerfile
 ./.venv
 **/__pycache__
 temp.ipynb
+./model/training.py
