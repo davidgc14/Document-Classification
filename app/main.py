@@ -36,7 +36,7 @@ def doc_analysis():
         logger.info("Prediction done successfully.")
         return jsonify({"result": result, 
                         "probability": max(prob)}), 200
-    except TypeError as e:
+    except Exception as e:
         logger.error(str(e))
         return jsonify({"ERROR": str(e)}), 400
     
