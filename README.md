@@ -16,3 +16,7 @@ curl -X POST http://localhost:5000/analysis -F "file=@/path/to/your/file.pdf"
 ```
 
 Currently only available on pdf's. They can be digital or scanned (OCR working).
+
+## Notes
+
+Currently using volumes for development. They may be disconnected for production environments.
