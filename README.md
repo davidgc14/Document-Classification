@@ -15,4 +15,4 @@ To sent files, simply type on your terminal:
 curl -X POST http://localhost:5000/analysis -F "file=@/path/to/your/file.pdf"
 ```
 
-Currently only available for digital pdf's.
+Currently only available on pdf's. They can be digital or scanned (OCR working).
