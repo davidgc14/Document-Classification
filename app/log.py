@@ -1,15 +1,12 @@
 import logging
 import os
 from datetime import datetime
-from pathlib import Path
 
 
 def create_logger(name):
-    # Get the path of the main script
-    project_path = Path(__file__).resolve().parent.parent
-    log_folder = os.path.join(project_path, 'logs')
     today = datetime.now().strftime('%Y%m%d')
 
+    log_folder = 'logs'
     log_path = os.path.join(log_folder, f'log_{today}.log')
     short_log_path = os.path.join(log_folder, f'short_log_{today}.log')
 
