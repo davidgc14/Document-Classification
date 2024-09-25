@@ -1,7 +1,7 @@
 # Document analysis
 
 This is a simple example of an API Dockerized. It allows you to analyze documents using any model you want (and for any purpose).
-Here I have used a simple example trained on films reviews (view the `model/training.ipynb` file).
+Here I have used a simple example trained on films reviews (view the `model/training.py` file).
 
 ## How it works
 
