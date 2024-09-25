@@ -5,10 +5,10 @@ from pdfminer.high_level import extract_text
 from pdfminer.layout import LAParams 
 import re
 import unidecode
-# import os
-# from pytesseract import image_to_string # para leer imágenes
-# import fitz # para leer archivos pdf
-# from PJIL import Image # para convertir imágenes a texto
+import os
+from pytesseract import image_to_string # para leer imágenes
+import fitz # para leer archivos pdf
+from PIL import Image # para convertir imágenes a texto
 
 from log import create_logger
 
@@ -44,39 +44,42 @@ def extraction(file):
     try:
         text = extract_digital_pdf(file)
         logger.debug('File extracted using digital process.')
-    except:
-        # text = extract_scanned_pdf(file)
-        # logger.debug('File extracted using OCR.')
-        pass
-    
+    except Exception as e:
+        logger.warning(str(e))
+        logger.debug('Trying with OCR.')
+        try:
+            text = extract_scanned_pdf(file)
+            logger.debug('File extracted using OCR.')
+        except Exception as e:
+            logger.error(str(e))
+            raise Exception('Imposible to extract text from the document.')
     
     return clean_text(text)
 
 
-# def extract_scanned_pdf(path):
-#     try:
-#         pdf_text = ''
+def extract_scanned_pdf(file):
+    pdf_text = ''
 
-#         # Cargar el documento PDF
-#         pdf_document = fitz.open(path)
+    if not file.readable():
+        raise Exception('Document encripted or damaged. Please review the doc status.')
+    
+    file.seek(0)
+    pdf_document = fitz.open(stream=file.read(), filetype="pdf")
 
-#         for page_num in range(pdf_document.page_count):
-#             page = pdf_document.load_page(page_num) # Cargar la página en memoria
+    for page_num in range(pdf_document.page_count):
+        page = pdf_document.load_page(page_num) 
 
-#             zoom = 2.0 # Zoom para mejorar la resolución de la imagen
-#             mat = fitz.Matrix(zoom, zoom)
-#             pixmap = page.get_pixmap(matrix=mat)
+        zoom = 2.0 # Zoom para mejorar la resolución de la imagen
+        mat = fitz.Matrix(zoom, zoom)
+        pixmap = page.get_pixmap(matrix=mat)
 
-#             # Convertir la página en imagen
-#             img = Image.frombytes("RGB", [pixmap.width, pixmap.height], pixmap.samples) #.convert("L")
+        # Convertir la página en imagen
+        img = Image.frombytes("RGB", [pixmap.width, pixmap.height], pixmap.samples) #.convert("L")
+        page_text = image_to_string(img)
 
-#             page_text = image_to_string(img)
+        pdf_text += ' ' + page_text
+    return pdf_text
 
-#             pdf_text = pdf_text + ' ' + ' '.join(page_text)
-#         return pdf_text
-#     except Exception as e:
-#         # logger.error(e)
-#         return None
 
 def extract_digital_pdf(file):
     # Config
