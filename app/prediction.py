@@ -1,5 +1,4 @@
 import joblib
-import numpy as np
 from io import BytesIO
 from pdfminer.high_level import extract_text 
 from pdfminer.layout import LAParams 
@@ -22,8 +21,8 @@ model = joblib.load('./model/model.pkl')
 vectorizer = joblib.load('./model/vectorizer.pkl')
 
 
-def predict_model(path):
-    text = extraction(path)
+def predict_model(file):
+    text = extraction(file)
     if text == None:
         return None, [0,0]
     
@@ -39,7 +38,13 @@ def predict_model(path):
 
 def extraction(file):
 
-    text = np.array([])
+    extension = os.path.splitext(file.filename)[1].lower()
+
+    if extension != '.pdf':
+        logger.warning(f'Extension {extension} not available.')
+        raise Exception('No PDF file. Unable to extract text.')
+
+    text = None
 
     try:
         text = extract_digital_pdf(file)
@@ -90,29 +95,25 @@ def extract_digital_pdf(file):
     file_stream = BytesIO(file.read())
 
     # extract the text from file
-    try:
-        pdf_text = extract_text(file_stream, laparams=laparams)
-    except Exception as e:
-        logger.error(e)
-        return None
+    pdf_text = extract_text(file_stream, laparams=laparams)
 
     len_pdf_text = len(clean_text(pdf_text))
-    if len_pdf_text < 20:
-        logger.warning('PDF seems to be scanned. No digital information found.')
+    if len_pdf_text < 200:
+        logger.warning('File with not enough data.')
         raise Exception('PDF seems to be scanned. No digital information found.')
-    else:
-        return pdf_text
+    
+    return pdf_text
     
 
 
 
 
 def clean_text(text, smallest=4, largest=20):
-    if text is None:
-        return None
-    
     if type(text) != str: # in case of beeing a vector
         text = ' '.join(text)
+    
+    if text is None or text == "":
+        return None
 
     cleaned = text.lower()
 
