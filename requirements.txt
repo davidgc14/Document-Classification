@@ -10,11 +10,14 @@ joblib==1.4.2
 MarkupSafe==2.1.5
 nltk==3.9.1
 numpy==2.1.1
+packaging==24.1
 pandas==2.2.3
 pdfminer.six==20240706
+pillow==10.4.0
 pycparser==2.22
 PyMuPDF==1.24.10
 PyMuPDFb==1.24.10
+pytesseract==0.3.13
 python-dateutil==2.9.0.post0
 pytz==2024.2
 regex==2024.9.11

@@ -1,5 +1,11 @@
 FROM python:3.12-slim
 
+# Instalar Tesseract
+RUN apt-get update && \
+    apt-get install -y tesseract-ocr && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
 # COPY . /app # Esto solo para produccion
 WORKDIR /app
 
